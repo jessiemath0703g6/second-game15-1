@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Jessie Math 捷析 -  角柱與圓柱PRO</title>
+
+    <meta name="description" content="© 2025–2026 Jessie Math 捷析老師. All rights reserved.">
+
+    <meta property="og:title" content="Jessie Math 捷析 -  角柱與圓柱PRO">
+    <meta property="og:description" content="© 2025–2026 Jessie Math 捷析老師. All rights reserved.">
+    <meta property="og:type" content="website">
+
+    <meta property="og:image" content="g6-u15-1.png">
+    <meta property="og:image:width" content="1024">
+    <meta property="og:image:height" content="1536">
+    <meta property="og:image:alt" content="Jessie Math 遊戲封面">
+
+    <link rel="image_src" href="g6-u15-1.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Jessie Math 捷析 -  角柱與圓柱PRO">
+    <meta name="twitter:description" content="© 2025–2026 Jessie Math 捷析老師. All rights reserved.">
+    <meta name="twitter:image" content="g6-u15-1.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-blue: #4A90E2;
+            --jessie-yellow: #FFD700;
+            --text-dark: #333;
+            --bg-light: #f9fbfd;
+        }
+
+        /* 第五點需求：背景圖片設定 */
+        body {
+            font-family: "Microsoft JhengHei", sans-serif;
+            margin: 0;
+            background: url('jessie logo.jpg') no-repeat right top fixed;
+            background-size: cover;
+            color: var(--text-dark);
+            -webkit-user-select: auto;
+            user-select: auto;
+        }
+
+        /* 畫板模式防反白防拖移 */
+        body.drawing {
+            -webkit-user-select: none;
+            user-select: none;
+            overflow: hidden;
+        }
+
+        /* 第三點需求：手機直向螢幕鎖定提示 */
+        #orientation-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(44, 62, 80, 0.95);
+            color: #FFD700;
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            padding: 20px;
+            flex-direction: column;
+        }
+        #orientation-overlay i {
+            font-size: 60px;
+            margin-bottom: 20px;
+            animation: rotatePhone 1.5s infinite ease-in-out alternate;
+        }
+        @keyframes rotatePhone {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(-90deg); }
+        }
+        @media screen and (max-width: 767px) and (orientation: portrait) {
+            #orientation-overlay { display: flex; }
+        }
+
+        /* Hero 導航區 */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.95); /* 半透明以透出些微背景 */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            gap: 14px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 10;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            min-width: 220px;
+        }
+
+        .brand-icon {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--jessie-yellow);
+            border-radius: 50%;
+            margin-right: 15px;
+            background: url('JESSIEMATH-Q.png') no-repeat center center;
+            background-size: contain;
+            flex: 0 0 auto;
+            background-color: white;
+        }
+
+        .brand-name {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+            line-height: 1.1;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .nav-btn {
+            padding: 8px 18px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: 0.3s;
+            border: 1.5px solid #ddd;
+            color: #555;
+            white-space: nowrap;
+            background: white;
+        }
+
+        .nav-btn:hover { background: #f0f0f0; }
+        .btn-return { border-color: #9b59b6; color: #9b59b6; }
+
+        /* 遊戲容器 */
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.93); /* 半透明背板讓文字清楚 */
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .page { display: none; }
+        .active { display: block; }
+
+        input[type="text"], input[type="number"] {
+            padding: 12px;
+            font-size: 18px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            width: 250px;
+            margin: 20px 0;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .btn-start {
+            background: var(--primary-blue);
+            color: white;
+            padding: 12px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* 選關卡頁新增模式區 */
+        .mode-wrap{ margin: 10px 0 18px; text-align: left; }
+        .mode-title{ font-weight: 800; color: #2c3e50; margin: 6px 0 10px; }
+        .mode-grid{ display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+        .mode-card{
+            border: 1.5px solid #e5e5e5; background: #fbfbfb;
+            border-radius: 14px; padding: 12px 12px; cursor: pointer; transition: .25s; user-select: none;
+        }
+        .mode-card:hover{ transform: translateY(-1px); background: #f6f9ff; border-color: #d7e3ff; }
+        .mode-card.active{
+            border-color: rgba(74,144,226,.55); background: rgba(74,144,226,.08);
+            box-shadow: 0 8px 20px rgba(74,144,226,.15);
+        }
+        .mode-name{ font-weight: 900; color: #2c3e50; }
+        .mode-time{ margin-top: 6px; font-weight: 700; color: #566; }
+        .mode-badge{
+            display:inline-block; font-size: 12px; padding: 4px 10px; border-radius: 999px;
+            border: 1px solid #ddd; margin-left: 8px; color: #566; background: #fff;
+        }
+
+        /* 關卡選單 */
+        .level-card {
+            background: #f1f8ff; padding: 20px; margin: 15px 0; border-radius: 10px;
+            cursor: pointer; transition: 0.3s; border-left: 5px solid var(--primary-blue); text-align: left;
+        }
+        .level-card:hover { transform: scale(1.02); background: #e1f0ff; }
+
+        /* 遊戲資訊欄 */
+        .game-status {
+            display: flex; justify-content: space-around; background: #eee; padding: 10px;
+            border-radius: 8px; margin-bottom: 20px; font-weight: bold; flex-wrap: wrap; gap: 10px;
+        }
+        .combo-text { color: #e67e22; font-size: 24px; }
+        .hidden { display: none; }
+
+        table { width: 100%; margin-top: 20px; border-collapse: collapse; }
+        th, td { padding: 10px; border-bottom: 1px solid #ddd; text-align: center; }
+
+        /* 題目 + 圖片放大 */
+        #qText{ font-size: 24px; line-height: 1.4; margin: 10px 0 12px; }
+        .image-placeholder {
+            background: #f0f0f0; min-height: 220px; display: flex; align-items: center; justify-content: center;
+            margin: 15px 0; border-radius: 10px; border: 1px dashed #ccc; padding: 12px; box-sizing: border-box;
+        }
+        .image-placeholder svg { width: 100%; max-width: 720px; height: auto; }
+
+        /* 作答區回饋 */
+        .feedback-box{ margin: 12px 0 6px; padding: 12px 14px; border-radius: 10px; font-weight: 700; text-align: left; line-height: 1.5; border: 1px solid #ddd; background: #fafafa; }
+        .feedback-ok{ border-color: rgba(39,174,96,.35); background: rgba(39,174,96,.08); color: #1f7a47; }
+        .feedback-bad{ border-color: rgba(231,76,60,.35); background: rgba(231,76,60,.08); color: #b03a2e; }
+        .feedback-hint{ font-size: 14px; font-weight: 600; opacity: .9; margin-top: 6px; }
+
+        /* 捷析老師鼓勵對話框 */
+        .input-area { display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 15px; }
+        .input-area input { margin: 0 !important; }
+        .mascot-container { display: flex; align-items: center; gap: 10px; margin-left: 10px; }
+        .mascot-img { width: 55px; height: 55px; border-radius: 50%; border: 2.5px solid #FFD700; background: url('JESSIEMATH-Q.png') no-repeat center; background-size: contain; background-color: #fff; flex-shrink: 0; }
+        .mascot-bubble { background: #fff9e6; border: 1.5px solid #f39c12; padding: 10px 14px; border-radius: 12px; font-weight: bold; color: #d35400; font-size: 15px; max-width: 190px; text-align: left; position: relative; line-height: 1.3; }
+        .mascot-bubble::before { content: ''; position: absolute; left: -9px; top: 50%; transform: translateY(-50%); border-width: 6px 9px 6px 0; border-style: solid; border-color: transparent #f39c12 transparent transparent; }
+
+        /* Action Buttons */
+        .action-bar{ margin-top: 30px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+        .pill-btn{
+            appearance: none; border: 1.5px solid #dcdcdc; background: #ffffff; color: #2c3e50;
+            padding: 12px 18px; border-radius: 999px; font-weight: 800; cursor: pointer; transition: .25s;
+            min-width: 170px; box-shadow: 0 10px 22px rgba(0,0,0,.06);
+        }
+        .pill-btn:hover{ transform: translateY(-1px); box-shadow: 0 14px 28px rgba(0,0,0,.10); }
+        .pill-btn.primary{ border-color: rgba(74,144,226,.45); background: rgba(74,144,226,.10); }
+
+        /* 復盤區塊設計 */
+        .review-stats { font-size: 18px; margin-bottom: 15px; background: #eef7ff; padding: 15px; border-radius: 10px; border-left: 5px solid #4A90E2; display: flex; justify-content: space-around; flex-wrap: wrap; gap: 10px; font-weight: bold; }
+        .review-stats strong { font-size: 24px; }
+        
+        .review-item {
+            background: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 8px;
+            padding: 15px; margin-bottom: 15px;
+        }
+        .review-item.wrong { border-left: 5px solid #e74c3c; }
+        .review-item.correct { border-left: 5px solid #2ecc71; }
+        .review-svg-wrap svg { max-width: 400px; height: auto; margin-top: 10px; background: #fff; border-radius: 5px; border: 1px solid #ccc;}
+
+        /* 第四點需求：透明白板與畫筆按鈕 */
+        #whiteboard {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 9998; background: transparent; touch-action: none;
+        }
+        #wbBtn {
+            position: fixed; bottom: 30px; right: 30px; z-index: 9999;
+            background: #2c3e50; color: white; border: 2px solid #FFD700;
+            padding: 15px 25px; border-radius: 50px; font-size: 18px; font-weight: bold;
+            cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.3); transition: 0.3s;
+        }
+        #wbBtn:hover { transform: scale(1.05); background: #34495e; }
+        #wbBtn.active { background: #e74c3c; border-color: #fff; }
+
+        /* Footer */
+        footer{ padding: 18px 0 28px; position: relative; z-index: 10; }
+        .footer-pill{
+            max-width: 880px; margin: 0 auto; padding: 12px 16px; border-radius: 999px;
+            display: flex; align-items: center; justify-content: space-between; gap: 14px;
+            background: rgba(255,255,255,.85); border: 1px solid rgba(74,144,226,.18);
+            box-shadow: 0 14px 34px rgba(0,0,0,.08); backdrop-filter: blur(10px);
+        }
+        .footer-left, .footer-right{ display:flex; align-items:center; gap:10px; flex-wrap: wrap; }
+        .footer-dot{ width: 10px; height: 10px; border-radius: 999px; background: var(--jessie-yellow); box-shadow: 0 0 0 4px rgba(255,215,0,.18); }
+        .footer-copy{ font-weight: 800; color:#2c3e50; letter-spacing: .2px; }
+        .footer-icon{ width: 30px; height: 30px; border-radius: 999px; display:flex; align-items:center; justify-content:center; border: 1px solid rgba(74,144,226,.22); background: rgba(74,144,226,.08); color:#2c3e50; }
+        .footer-tagline{ font-weight: 800; color:#2c3e50; opacity: .95; }
+
+        /* RWD */
+        @media (max-width: 900px){
+            .container{ margin: 24px 14px; }
+            #qText{ font-size: 22px; }
+            .image-placeholder{ min-height: 200px; }
+        }
+        @media (max-width: 720px){ .mode-grid{ grid-template-columns: 1fr; } }
+        @media (max-width: 640px){
+            .footer-pill{ border-radius: 22px; flex-direction: column; align-items: flex-start; }
+            .footer-right{ width: 100%; }
+            #wbBtn { padding: 12px 18px; font-size: 16px; bottom: 15px; right: 15px; }
+            
+            .input-area { flex-direction: column; align-items: stretch; gap: 15px; }
+            .mascot-container { justify-content: center; margin-left: 0; }
+            .review-stats { flex-direction: column; align-items: flex-start; }
+        }
+        @media (max-width: 600px){
+            header{ padding: 12px 14px; }
+            .brand-icon{ width: 44px; height: 44px; margin-right: 12px; }
+            .brand-name{ font-size: 22px; }
+            .nav-btn{ padding: 8px 14px; }
+            .btn-start{ width: 100%; max-width: 420px; padding: 12px 18px; font-size: 18px; }
+            input[type="text"], input[type="number"]{ width: 100%; }
+            .combo-text{ font-size: 20px; }
+            #qText{ font-size: 20px; }
+            .image-placeholder{ min-height: 180px; }
+            .pill-btn{ width: 100%; max-width: 520px; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="orientation-overlay">
+    <i class="fas fa-mobile-alt"></i>
+    <span>請將手機轉為橫向<br>以獲得最佳遊戲體驗</span>
+</div>
+
+<canvas id="whiteboard"></canvas>
+<button id="wbBtn" onclick="toggleWhiteboard()">🖍️ 開啟右下白板</button>
+
+<header>
+    <div class="brand">
+        <div class="brand-icon"></div>
+        <div class="brand-name">Jessie Math 捷析 </div>
+    </div>
+    <div class="nav-buttons">
+        <a href="https://jessiemath0703-chu.github.io/website2/" class="nav-btn">🏠 首頁</a>
+        <a href="https://jessiemath0703-chu.github.io/Game-Lobby/" class="nav-btn">🎮 遊戲大廳</a>
+        <a href="https://jessiemath0703-chu.github.io/Game-Lobby/#g6-u15" class="nav-btn btn-return">🔙 G6角柱與圓柱</a>
+    </div>
+</header>
+
+<div class="container">
+    <div id="page1" class="page active">
+        <h2>歡迎來到角柱與圓柱挑戰賽</h2>
+        <div style="text-align: left; background: #fff9e6; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+            <p><strong>📜 遊戲規則：</strong></p>
+            <ul>
+                <li>答對一題：<strong>+100分</strong> 且 <strong>時間增加 5 秒</strong>。</li>
+                <li>答錯一題：<strong>時間扣除 5 秒</strong>。</li>
+                <li><strong>Combo 連擊：</strong>連續答對可獲得加倍分數 (1.2x, 1.5x, 2x)。</li>
+                <li>圓周率請以 <strong>3.14</strong> 計算。</li>
+                <li><strong>本遊戲每題皆有圖</strong>，請依圖形與標示作答。</li>
+                <li>右下角有<strong>🖍️白板工具</strong>，可直接於畫面上計算！</li>
+            </ul>
+        </div>
+        <input type="text" id="playerName" placeholder="請輸入您的名字" maxlength="10"><br>
+        <button class="btn-start" onclick="toPage2()">開始挑戰</button>
+    </div>
+
+    <div id="page2" class="page">
+        <h3>選擇關卡 - <span id="displayName"></span>
+            <span class="mode-badge" id="modeBadge">基礎・120s</span>
+        </h3>
+
+        <div class="mode-wrap">
+            <div class="mode-title">選擇模式</div>
+            <div class="mode-grid">
+                <div class="mode-card active" id="mode-basic" onclick="setMode('basic')">
+                    <div class="mode-name">基礎</div>
+                    <div class="mode-time">倒數 120 秒</div>
+                </div>
+                <div class="mode-card" id="mode-advanced" onclick="setMode('advanced')">
+                    <div class="mode-name">進階</div>
+                    <div class="mode-time">倒數 90 秒</div>
+                </div>
+                <div class="mode-card" id="mode-boss" onclick="setMode('boss')">
+                    <div class="mode-name">魔王</div>
+                    <div class="mode-time">倒數 60 秒</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="level-card" onclick="startGame(1)">
+            <h4>第一關：角柱與圓柱的體積</h4>
+            <p>基礎概念：底面積 × 柱高</p>
+        </div>
+        <div class="level-card" onclick="startGame(2)">
+            <h4>第二關：角柱與圓柱的應用</h4>
+            <p>包含生活應用題與空心柱體計算</p>
+        </div>
+        <div class="level-card" onclick="startGame(3)">
+            <h4>第三關：角柱與圓柱的表面積</h4>
+            <p>挑戰側面面積與底面面積的加總</p>
+        </div>
+
+        <hr>
+        <h4>🏆 前十名排行榜</h4>
+        <table id="leaderboard">
+            <thead>
+                <tr><th>名次</th><th>玩家</th><th>日期 / 時間</th><th>關卡</th><th>模式</th><th>分數 / 答題數</th></tr>
+            </thead>
+            <tbody id="leaderboardBody">
+                <tr><td colspan="6">目前無資料</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="page3" class="page">
+        <div class="game-status">
+            <span>時間: <span id="timer">120</span>s</span>
+            <span>分數: <span id="score">0</span></span>
+            <span class="combo-text">Combo: x<span id="combo">1</span></span>
+        </div>
+
+        <div id="questionContainer">
+            <h4 id="qText">正在加載題目...</h4>
+
+            <div id="feedback" class="feedback-box hidden"></div>
+
+            <div id="qImage" class="image-placeholder">載入圖形中…</div>
+            
+            <div class="input-area">
+                <input type="number" id="userAnswer" placeholder="請輸入數字">
+                <button class="btn-start" id="submitBtn" onclick="checkAnswer()">提交</button>
+                <div class="mascot-container">
+                    <div class="mascot-img"></div>
+                    <div class="mascot-bubble" id="mascotMsg">準備好了嗎？捷析老師陪你解題！</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-bar">
+            <button class="pill-btn" onclick="pauseGame()">⏸ 暫停</button>
+            <button class="pill-btn primary" onclick="resetGame()">↻ 重新開始</button>
+            <button class="pill-btn" onclick="toPage2()">↩ 回主選單</button>
+        </div>
+    </div>
+
+    <div id="page4" class="page">
+        <h2>📝 遊戲復盤</h2>
+        
+        <div id="reviewStats" class="review-stats">
+            <span>🏆 最終得分：<strong id="finalScore" style="color:#e67e22;">0</strong></span>
+            <span>✅ 答對：<strong id="correctCount" style="color:#2ecc71;">0</strong> / <span class="totalCount">0</span>題</span>
+            <span>❌ 答錯：<strong id="wrongCount" style="color:#e74c3c;">0</strong> / <span class="totalCount">0</span>題</span>
+        </div>
+        
+        <div id="reviewContainer" style="text-align: left; max-height: 55vh; overflow-y: auto; padding-right: 10px; margin-top: 20px;">
+            </div>
+
+        <div class="action-bar">
+            <button class="pill-btn primary" onclick="toPage2()">↩ 回主選單</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let score = 0;
+    let timeLeft = 120;
+    let combo = 1;
+    let timerInterval;
+    let currentLevel = 0;
+    let currentAnswer = 0;
+    let currentQuestionObj = null;
+    let playerName = "";
+
+    let deck = [];
+    let deckIndex = 0;
+    let gameHistory = []; // 儲存復盤資料
+
+    let isTransitioning = false;
+    const NEXT_DELAY = 1500; // 延長至1.5秒讓玩家看清楚回饋
+
+    let currentMode = "basic";
+    const modeSeconds = { basic: 120, advanced: 90, boss: 60 };
+
+    // 捷析老師隨機語錄庫
+    const correctQuotes = [
+        "太棒了！繼續保持！",
+        "這題解得真漂亮！",
+        "思路很清晰喔！",
+        "完全正確，給你一個讚！",
+        "捷析老師為你感到驕傲！",
+        "這題難不倒你！",
+        "非常好，乘勝追擊吧！"
+    ];
+    const wrongQuotes = [
+        "沒關係，我們再來一次！",
+        "差一點點了，仔細檢查計算過程喔！",
+        "失敗為成功之母，加油！",
+        "捷析老師陪著你，別灰心！",
+        "多想一下，答案就快出來了！",
+        "這題比較有挑戰性，慢慢來！",
+        "深呼吸，我們一起克服它！"
+    ];
+
+    // ---------- 白板工具 ----------
+    const canvas = document.getElementById('whiteboard');
+    const ctx = canvas.getContext('2d');
+    let isDrawing = false;
+    let whiteboardActive = false;
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function toggleWhiteboard() {
+        whiteboardActive = !whiteboardActive;
+        const btn = document.getElementById('wbBtn');
+        
+        if (whiteboardActive) {
+            canvas.style.pointerEvents = 'auto';
+            document.body.classList.add('drawing');
+            btn.innerHTML = '🧹 關閉並清除白板';
+            btn.classList.add('active');
+        } else {
+            canvas.style.pointerEvents = 'none';
+            document.body.classList.remove('drawing');
+            btn.innerHTML = '🖍️ 開啟右下白板';
+            btn.classList.remove('active');
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // 關閉時自動清除
+        }
+    }
+
+    function getPos(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: clientX - rect.left, y: clientY - rect.top };
+    }
+
+    canvas.addEventListener('mousedown', startDraw);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', endDraw);
+    canvas.addEventListener('mouseout', endDraw);
+
+    // 手機觸控防拖移
+    canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDraw(e); }, {passive: false});
+    canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); }, {passive: false});
+    canvas.addEventListener('touchend', endDraw);
+
+    function startDraw(e) {
+        if(!whiteboardActive) return;
+        isDrawing = true;
+        const pos = getPos(e);
+        ctx.beginPath();
+        ctx.moveTo(pos.x, pos.y);
+    }
+    function draw(e) {
+        if(!isDrawing || !whiteboardActive) return;
+        const pos = getPos(e);
+        ctx.lineTo(pos.x, pos.y);
+        ctx.strokeStyle = '#e74c3c';
+        ctx.lineWidth = 3;
+        ctx.lineCap = 'round';
+        ctx.stroke();
+    }
+    function endDraw() {
+        isDrawing = false;
+        ctx.closePath();
+    }
+
+    // ---------- 工具 ----------
+    function randInt(min, max){ return Math.floor(Math.random() * (max - min + 1)) + min; }
+    function roundTo(n, digits=2){
+        const p = Math.pow(10, digits);
+        return Math.round(n * p) / p;
+    }
+    function shuffle(arr){
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+    function ensureImage(qObj){
+        const hasSvg = qObj && typeof qObj.svg === "string" && qObj.svg.trim().startsWith("<svg");
+        document.getElementById('submitBtn').disabled = !hasSvg;
+        document.getElementById('qImage').innerHTML = hasSvg ? qObj.svg : "缺少圖形，無法作答。";
+    }
+
+    function showFeedback(type, html){
+        const fb = document.getElementById('feedback');
+        fb.classList.remove('hidden', 'feedback-ok', 'feedback-bad');
+        fb.classList.add(type === 'ok' ? 'feedback-ok' : 'feedback-bad');
+        fb.innerHTML = html;
+    }
+    function clearFeedback(){
+        const fb = document.getElementById('feedback');
+        fb.classList.add('hidden');
+        fb.classList.remove('feedback-ok', 'feedback-bad');
+        fb.innerHTML = "";
+    }
+
+    // 優化後的 SVG 定義
+    function svgDimDefs(){
+        return `
+        <defs>
+          <marker id="arrow" markerWidth="12" markerHeight="12" refX="9" refY="3" orient="auto">
+            <path d="M0,0 L9,3 L0,6 Z" fill="#2c3e50"/>
+          </marker>
+          <style>
+            .dim{ stroke:#2c3e50; stroke-width:2.5; marker-start:url(#arrow); marker-end:url(#arrow); }
+            .ext{ stroke:#2c3e50; stroke-width:2; stroke-dasharray:4 4; opacity:.6; }
+            .lbl{ fill:#2c3e50; font-size:20px; font-weight:800; font-family: "Arial", sans-serif; text-shadow: 1px 1px 0 #fff; }
+            .cap{ fill:#2c3e50; font-size:22px; font-weight:800; }
+            .note{ fill:#566; font-size:16px; font-weight:600; opacity:.9; }
+            .main-shape { stroke-width: 3.5; }
+          </style>
+        </defs>`;
+    }
+
+    const SVG_W = 760;
+    const SVG_H = 300;
+    const NOTE_Y = 282;
+
+    // ---------- SVG 圖形模板 ----------
+    function svgCylinder(r, h, label="圓柱"){
+        return `
+        <svg viewBox="0 0 ${SVG_W} ${SVG_H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${label}">
+          ${svgDimDefs()}
+          <rect x="0" y="0" width="${SVG_W}" height="${SVG_H}" rx="18" fill="#ffffff" stroke="#d7e3ff"/>
+          <text x="24" y="40" class="cap">${label}</text>
+          <g transform="translate(100,10)">
+            <path d="M140,82 L140,198" stroke="#4A90E2" class="main-shape"/>
+            <path d="M360,82 L360,198" stroke="#4A90E2" class="main-shape"/>
+            <ellipse cx="250" cy="198" rx="110" ry="34" fill="#f0f7ff" stroke="#4A90E2" class="main-shape"/>
+            <ellipse cx="250" cy="82" rx="110" ry="34" fill="#fff" stroke="#4A90E2" class="main-shape"/>
+            <circle cx="250" cy="82" r="4" fill="#2c3e50"/>
+            <line x1="250" y1="82" x2="360" y2="82" class="dim"/>
+            <text x="270" y="70" class="lbl">r = ${r}</text>
+            <line x1="360" y1="82" x2="430" y2="82" class="ext"/>
+            <line x1="360" y1="198" x2="430" y2="198" class="ext"/>
+            <line x1="415" y1="82" x2="415" y2="198" class="dim"/>
+            <text x="425" y="150" class="lbl">h = ${h}</text>
+          </g>
+          <text x="24" y="${NOTE_Y}" class="note">請依圖形標示作答（π = 3.14）</text>
+        </svg>`;
+    }
+
+    function svgTriPrism(base, height, prismH, label="三角柱"){
+        return `
+        <svg viewBox="0 0 ${SVG_W} ${SVG_H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${label}">
+          ${svgDimDefs()}
+          <rect x="0" y="0" width="${SVG_W}" height="${SVG_H}" rx="18" fill="#ffffff" stroke="#d8f2e4"/>
+          <text x="24" y="40" class="cap">${label}</text>
+          <g transform="translate(60,10)">
+            <polygon points="360,200 500,200 430,90" fill="#f2fbf6" stroke="#27ae60" stroke-width="2" opacity="0.6"/>
+            <line x1="160" y1="200" x2="360" y2="200" stroke="#27ae60" class="main-shape"/>
+            <line x1="300" y1="200" x2="500" y2="200" stroke="#27ae60" class="main-shape"/>
+            <line x1="230" y1="90"  x2="430" y2="90"  stroke="#27ae60" class="main-shape"/>
+            <polygon points="160,200 300,200 230,90" fill="#fff" stroke="#27ae60" class="main-shape"/>
+            <line x1="160" y1="200" x2="160" y2="230" class="ext"/>
+            <line x1="300" y1="200" x2="300" y2="230" class="ext"/>
+            <line x1="160" y1="220" x2="300" y2="220" class="dim"/>
+            <text x="190" y="245" class="lbl">底邊=${base}</text>
+            <line x1="230" y1="90" x2="230" y2="200" stroke="#555" stroke-dasharray="4,4" stroke-width="2"/>
+            <rect x="230" y="190" width="10" height="10" fill="none" stroke="#555"/> <text x="235" y="150" class="lbl" style="fill:#d35400;">h=${height}</text>
+            <text x="255" y="170" style="font-size:14px; fill:#d35400;">(底面高)</text>
+            <line x1="300" y1="200" x2="500" y2="200" class="dim" transform="translate(0, 25)"/>
+            <line x1="300" y1="200" x2="300" y2="235" class="ext"/>
+            <line x1="500" y1="200" x2="500" y2="235" class="ext"/>
+            <text x="360" y="250" class="lbl">柱高=${prismH}</text>
+          </g>
+          <text x="24" y="${NOTE_Y}" class="note">先求底面積，再乘柱高</text>
+        </svg>`;
+    }
+
+    function svgTrapezoidPrism(a, b, trapH, prismH, label="梯形柱"){
+        return `
+        <svg viewBox="0 0 ${SVG_W} ${SVG_H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${label}">
+          ${svgDimDefs()}
+          <rect x="0" y="0" width="${SVG_W}" height="${SVG_H}" rx="18" fill="#ffffff" stroke="#ffe0ee"/>
+          <text x="24" y="40" class="cap">${label}</text>
+          <g transform="translate(50,10)">
+            <polygon points="380,200 550,200 515,120 415,120" fill="#fff5f9" stroke="#e84393" stroke-width="2" opacity="0.6"/>
+            <line x1="160" y1="200" x2="380" y2="200" stroke="#e84393" class="main-shape"/>
+            <line x1="330" y1="200" x2="550" y2="200" stroke="#e84393" class="main-shape"/>
+            <line x1="295" y1="120" x2="515" y2="120" stroke="#e84393" class="main-shape"/>
+            <line x1="195" y1="120" x2="415" y2="120" stroke="#e84393" class="main-shape"/>
+            <polygon points="160,200 330,200 295,120 195,120" fill="#fff" stroke="#e84393" class="main-shape"/>
+            <line x1="195" y1="120" x2="195" y2="90" class="ext"/>
+            <line x1="295" y1="120" x2="295" y2="90" class="ext"/>
+            <line x1="195" y1="100" x2="295" y2="100" class="dim"/>
+            <text x="210" y="90" class="lbl">上=${a}</text>
+            <line x1="160" y1="200" x2="160" y2="230" class="ext"/>
+            <line x1="330" y1="200" x2="330" y2="230" class="ext"/>
+            <line x1="160" y1="220" x2="330" y2="220" class="dim"/>
+            <text x="210" y="245" class="lbl">下=${b}</text>
+            <line x1="295" y1="120" x2="295" y2="200" stroke="#555" stroke-dasharray="4,4" stroke-width="2"/>
+            <rect x="295" y="190" width="10" height="10" fill="none" stroke="#555" transform="translate(-10,0)"/>
+            <text x="235" y="170" class="lbl" style="fill:#c0392b;">h=${trapH}</text>
+            <line x1="330" y1="200" x2="550" y2="200" class="dim" transform="translate(0, 25)"/>
+            <line x1="330" y1="200" x2="330" y2="235" class="ext"/>
+            <line x1="550" y1="200" x2="550" y2="235" class="ext"/>
+            <text x="400" y="250" class="lbl">柱高=${prismH}</text>
+          </g>
+          <text x="24" y="${NOTE_Y}" class="note">梯形面積 = (上底+下底)×高÷2</text>
+        </svg>`;
+    }
+
+    function svgHollowCylinder(R, r, h, label="空心圓柱"){
+        return `
+        <svg viewBox="0 0 ${SVG_W} ${SVG_H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${label}">
+          ${svgDimDefs()}
+          <rect x="0" y="0" width="${SVG_W}" height="${SVG_H}" rx="18" fill="#ffffff" stroke="#e5ddff"/>
+          <text x="24" y="40" class="cap">${label}</text>
+          <g transform="translate(80,10)">
+            <path d="M130,82 L130,198" stroke="#6c5ce7" class="main-shape"/>
+            <path d="M370,82 L370,198" stroke="#6c5ce7" class="main-shape"/>
+            <ellipse cx="250" cy="198" rx="120" ry="38" fill="#fff" stroke="#6c5ce7" class="main-shape"/>
+            <ellipse cx="250" cy="82" rx="120" ry="38" fill="#fff" stroke="#6c5ce7" class="main-shape"/>
+            <ellipse cx="250" cy="82" rx="70" ry="22" fill="#e5ddff" stroke="#6c5ce7" class="main-shape"/>
+            <circle cx="250" cy="82" r="4" fill="#2c3e50"/>
+            <line x1="250" y1="82" x2="370" y2="82" class="dim" transform="translate(0, -20)"/>
+            <line x1="370" y1="82" x2="370" y2="60" class="ext"/>
+            <line x1="250" y1="82" x2="250" y2="60" class="ext"/>
+            <text x="280" y="55" class="lbl">R=${R}</text>
+            <line x1="250" y1="82" x2="320" y2="82" class="dim"/>
+            <text x="260" y="100" class="lbl">r=${r}</text>
+            <line x1="370" y1="82" x2="440" y2="82" class="ext"/>
+            <line x1="370" y1="198" x2="440" y2="198" class="ext"/>
+            <line x1="425" y1="82" x2="425" y2="198" class="dim"/>
+            <text x="435" y="150" class="lbl">h=${h}</text>
+          </g>
+          <text x="24" y="${NOTE_Y}" class="note">體積 = (πR² − πr²) × h</text>
+        </svg>`;
+    }
+
+    function svgNetCylinder(d, h, label="圓柱展開圖"){
+        const c = roundTo(3.14 * d, 2);
+        return `
+        <svg viewBox="0 0 ${SVG_W} ${SVG_H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${label}">
+          ${svgDimDefs()}
+          <rect x="0" y="0" width="${SVG_W}" height="${SVG_H}" rx="18" fill="#ffffff" stroke="#d7e3ff"/>
+          <text x="24" y="40" class="cap">${label}</text>
+          <g transform="translate(40,10)">
+            <circle cx="140" cy="140" r="56" fill="#fff" stroke="#4A90E2" class="main-shape"/>
+            <circle cx="140" cy="140" r="3.5" fill="#2c3e50"/>
+            <line x1="84" y1="140" x2="196" y2="140" class="dim"/>
+            <text x="110" y="130" class="lbl">d=${d}</text>
+            <rect x="260" y="80" width="360" height="120" fill="#fff" stroke="#4A90E2" class="main-shape"/>
+            <line x1="260" y1="80" x2="260" y2="60" class="ext"/>
+            <line x1="620" y1="80" x2="620" y2="60" class="ext"/>
+            <line x1="260" y1="65" x2="620" y2="65" class="dim"/>
+            <text x="350" y="55" class="lbl">長 = πd = ${c}</text>
+            <line x1="620" y1="80" x2="650" y2="80" class="ext"/>
+            <line x1="620" y1="200" x2="650" y2="200" class="ext"/>
+            <line x1="640" y1="80" x2="640" y2="200" class="dim"/>
+            <text x="650" y="150" class="lbl">h=${h}</text>
+          </g>
+          <text x="24" y="${NOTE_Y}" class="note">側面面積 = 圓周長 × 高</text>
+        </svg>`;
+    }
+
+    function svgRectPrism(l, w, h, label="長方體"){
+        return `
+        <svg viewBox="0 0 ${SVG_W} ${SVG_H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${label}">
+          ${svgDimDefs()}
+          <rect x="0" y="0" width="${SVG_W}" height="${SVG_H}" rx="18" fill="#ffffff" stroke="#dcf7d0"/>
+          <text x="24" y="40" class="cap">${label}</text>
+          <g transform="translate(100,20)">
+            <polygon points="180,110 380,110 470,60 270,60" fill="#f0fff4" stroke="#27ae60" stroke-width="1.5"/>
+            <line x1="180" y1="110" x2="180" y2="190" stroke="#27ae60" stroke-width="1.5" stroke-dasharray="4,4"/>
+            <line x1="270" y1="60" x2="270" y2="140" stroke="#27ae60" stroke-width="1.5" stroke-dasharray="4,4"/>
+            <rect x="180" y="110" width="200" height="80" fill="none" stroke="#27ae60" class="main-shape"/> <polygon points="380,190 470,140 470,60 380,110" fill="none" stroke="#27ae60" class="main-shape"/> <line x1="180" y1="110" x2="270" y2="60" stroke="#27ae60" class="main-shape"/>
+            <line x1="380" y1="110" x2="470" y2="60" stroke="#27ae60" class="main-shape"/>
+            <line x1="180" y1="190" x2="180" y2="220" class="ext"/>
+            <line x1="380" y1="190" x2="380" y2="220" class="ext"/>
+            <line x1="180" y1="210" x2="380" y2="210" class="dim"/>
+            <text x="270" y="235" class="lbl">長=${l}</text>
+            <line x1="380" y1="190" x2="470" y2="140" class="dim" transform="translate(10,10)"/>
+            <text x="440" y="190" class="lbl">寬=${w}</text>
+            <line x1="470" y1="60" x2="520" y2="60" class="ext"/>
+            <line x1="470" y1="140" x2="520" y2="140" class="ext"/>
+            <line x1="500" y1="60" x2="500" y2="140" class="dim"/>
+            <text x="510" y="110" class="lbl">高=${h}</text>
+          </g>
+          <text x="24" y="${NOTE_Y}" class="note">表面積 = 2(長×寬 + 長×高 + 寬×高)</text>
+        </svg>`;
+    }
+
+    // ---------- 第一點需求：擴充題庫與數字變化 ----------
+    function generateQuestionsForLevel(level){
+        const list = [];
+
+        if (level === 1){
+            for (let i=0;i<25;i++){
+                const r = randInt(2, 35);
+                const h = randInt(5, 50);
+                const a = roundTo(3.14 * r * r * h, 2);
+                list.push({ q: `如圖，圓柱底面半徑 ${r} cm，高 ${h} cm，體積是多少立方公分？`, a, svg: svgCylinder(r, h, "圓柱（體積）") });
+            }
+
+            for (let i=0;i<25;i++){
+                const base = randInt(4, 30);
+                const height = randInt(4, 30);
+                const prismH = randInt(5, 45);
+                const vol = roundTo((base * height / 2) * prismH, 2);
+                list.push({ q: `如圖，三角柱底邊 ${base} cm、底面高 ${height} cm、柱高 ${prismH} cm，體積是多少立方公分？`, a: vol, svg: svgTriPrism(base, height, prismH, "三角柱（體積）") });
+            }
+
+            for (let i=0;i<25;i++){
+                const aTop = randInt(3, 25);
+                const bBot = randInt(aTop+2, aTop+30);
+                const trapH = randInt(4, 25);
+                const prismH = randInt(5, 45);
+                const vol = roundTo(((aTop + bBot) * trapH / 2) * prismH, 2);
+                list.push({ q: `如圖，梯形柱上底 ${aTop} cm、下底 ${bBot} cm、梯形高 ${trapH} cm、柱高 ${prismH} cm，體積是多少立方公分？`, a: vol, svg: svgTrapezoidPrism(aTop, bBot, trapH, prismH, "梯形柱（體積）") });
+            }
+        }
+
+        if (level === 2){
+            for (let i=0;i<30;i++){
+                const R = randInt(8, 40);
+                const r = randInt(2, Math.max(2, R-3));
+                const h = randInt(5, 50);
+                const vol = roundTo((3.14*R*R - 3.14*r*r) * h, 2);
+                list.push({ q: `如圖，空心圓柱外半徑 ${R} cm、內半徑 ${r} cm、高 ${h} cm，材料部分體積約是多少立方公分？`, a: vol, svg: svgHollowCylinder(R, r, h, "空心圓柱（體積）") });
+            }
+
+            for (let i=0;i<30;i++){
+                const bigA = randInt(100, 900);
+                const holeA = randInt(10, Math.min(300, bigA-50));
+                const prismH = randInt(5, 55);
+                const vol = roundTo((bigA - holeA) * prismH, 2);
+
+                const svg = `
+                <svg viewBox="0 0 ${SVG_W} ${SVG_H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="挖洞角柱">
+                  ${svgDimDefs()}
+                  <rect x="0" y="0" width="${SVG_W}" height="${SVG_H}" rx="18" fill="#ffffff" stroke="#ffe9c8"/>
+                  <text x="24" y="40" class="cap">挖洞角柱（體積）</text>
+                  <g transform="translate(90,18)">
+                    <rect x="120" y="88" width="260" height="140" fill="#fff" stroke="#f39c12" class="main-shape"/>
+                    <rect x="210" y="138" width="80" height="56" fill="none" stroke="#2c3e50" stroke-width="2" stroke-dasharray="6 4"/>
+                    <text x="410" y="140" class="lbl">大底面積 = ${bigA}</text>
+                    <text x="410" y="170" class="lbl">挖洞面積 = ${holeA}</text>
+                    <line x1="410" y1="88" x2="410" y2="228" class="dim"/>
+                    <line x1="380" y1="88" x2="425" y2="88" class="ext"/>
+                    <line x1="380" y1="228" x2="425" y2="228" class="ext"/>
+                    <text x="430" y="166" class="lbl">柱高 = ${prismH}</text>
+                  </g>
+                  <text x="24" y="${NOTE_Y}" class="note">體積 = (大底面積 − 挖洞面積) × 柱高</text>
+                </svg>`;
+
+                list.push({ q: `如圖，角柱的大底面積為 ${bigA} cm²，中間挖掉面積 ${holeA} cm² 的孔，柱高 ${prismH} cm，剩下體積是多少立方公分？`, a: vol, svg });
+            }
+        }
+
+        if (level === 3){
+            for (let i=0;i<25;i++){
+                const d = randInt(4, 40);
+                const h = randInt(5, 50);
+                const area = roundTo((3.14 * d) * h, 2);
+                list.push({ q: `如圖，圓柱直徑 ${d} cm，高 ${h} cm，側面面積約是多少平方公分？`, a: area, svg: svgNetCylinder(d, h, "圓柱（側面面積）") });
+            }
+
+            for (let i=0;i<25;i++){
+                const r = randInt(3, 30);
+                const h = randInt(5, 50);
+                const area = roundTo(2*3.14*r*h + 2*3.14*r*r, 2);
+                const svg = `
+                <svg viewBox="0 0 ${SVG_W} ${SVG_H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="圓柱表面積">
+                  ${svgDimDefs()}
+                  <rect x="0" y="0" width="${SVG_W}" height="${SVG_H}" rx="18" fill="#ffffff" stroke="#d7e3ff"/>
+                  <text x="24" y="40" class="cap">圓柱（表面積）</text>
+                  <g transform="translate(100,10)">
+                    <path d="M140,82 L140,198" stroke="#4A90E2" class="main-shape"/>
+                    <path d="M360,82 L360,198" stroke="#4A90E2" class="main-shape"/>
+                    <ellipse cx="250" cy="198" rx="110" ry="34" fill="#fff" stroke="#4A90E2" class="main-shape"/>
+                    <ellipse cx="250" cy="82" rx="110" ry="34" fill="#fff" stroke="#4A90E2" class="main-shape"/>
+                    <circle cx="250" cy="82" r="4" fill="#2c3e50"/>
+                    <line x1="250" y1="82" x2="360" y2="82" class="dim"/>
+                    <text x="280" y="70" class="lbl">r=${r}</text>
+                    <line x1="360" y1="82" x2="430" y2="82" class="ext"/>
+                    <line x1="360" y1="198" x2="430" y2="198" class="ext"/>
+                    <line x1="415" y1="82" x2="415" y2="198" class="dim"/>
+                    <text x="425" y="150" class="lbl">h=${h}</text>
+                  </g>
+                  <text x="24" y="${NOTE_Y}" class="note">表面積 = 側面面積 + 2×底面積</text>
+                </svg>`;
+                list.push({ q: `如圖，圓柱底面半徑 ${r} cm，高 ${h} cm，表面積約是多少平方公分？`, a: area, svg });
+            }
+
+            for (let i=0;i<25;i++){
+                const l = randInt(2, 35);
+                const w = randInt(2, 35);
+                const h = randInt(2, 35);
+                const area = 2*(l*w + l*h + w*h);
+                list.push({ q: `如圖，長方體長 ${l} cm、寬 ${w} cm、高 ${h} cm，表面積是多少平方公分？`, a: area, svg: svgRectPrism(l, w, h, "長方體（表面積）") });
+            }
+        }
+
+        if (list.length === 0){
+            list.push({ q: "如圖，圓柱底面半徑 10 cm，高 20 cm，體積是多少立方公分？", a: 6280, svg: svgCylinder(10, 20, "圓柱（體積）") });
+        }
+
+        // 第七點需求：每輪產生題庫先洗牌
+        shuffle(list);
+        return list;
+    }
+
+    function buildDeck(level){
+        deck = generateQuestionsForLevel(level);
+        deckIndex = 0;
+    }
+
+    // 第七點需求：抽完再洗牌
+    function drawFromDeck(){
+        if (!deck || deck.length === 0) buildDeck(currentLevel);
+        if (deckIndex >= deck.length){
+            shuffle(deck);
+            deckIndex = 0;
+        }
+        const qObj = deck[deckIndex];
+        deckIndex++;
+        return qObj;
+    }
+
+    // ---------- 模式 ----------
+    function setMode(mode){
+        currentMode = mode;
+        ["basic","advanced","boss"].forEach(m=>{
+            const el = document.getElementById("mode-"+m);
+            if (el) el.classList.toggle("active", m===mode);
+        });
+
+        const badge = document.getElementById("modeBadge");
+        if (badge){
+            const label = mode==="basic" ? "基礎・120s" : mode==="advanced" ? "進階・90s" : "魔王・60s";
+            badge.textContent = label;
+        }
+    }
+
+    function getModeLabel(mode){
+        return mode==="basic" ? "基礎" : mode==="advanced" ? "進階" : "魔王";
+    }
+
+    // ---------- 流程控制 ----------
+    function toPage2() {
+        playerName = document.getElementById('playerName').value;
+        if (!playerName) return alert("請輸入名字！");
+        document.getElementById('displayName').innerText = playerName;
+        showPage('page2');
+    }
+
+    function showPage(id) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        if (id !== 'page3') clearInterval(timerInterval);
+        if (id !== 'page3') clearFeedback();
+    }
+
+    function startGame(level) {
+        currentLevel = level;
+        score = 0;
+        timeLeft = modeSeconds[currentMode] || 120;
+        combo = 1;
+        gameHistory = []; // 清空復盤歷史
+        updateUI();
+        showPage('page3');
+        document.getElementById('mascotMsg').innerText = "準備好了嗎？捷析老師陪你解題！";
+
+        buildDeck(level);
+
+        clearFeedback();
+        nextQuestion();
+
+        clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            document.getElementById('timer').innerText = timeLeft;
+            if (timeLeft <= 0) endGame();
+        }, 1000);
+    }
+
+    function nextQuestion() {
+        clearFeedback();
+        const qObj = drawFromDeck();
+        currentQuestionObj = qObj;
+        document.getElementById('qText').innerText = qObj.q;
+        currentAnswer = qObj.a;
+        ensureImage(qObj);
+        document.getElementById('userAnswer').value = "";
+        document.getElementById('userAnswer').focus();
+    }
+
+    // 第八點需求：答對回饋、答錯顯示正確答案，然後自動進入下一題
+    function checkAnswer() {
+        if (isTransitioning) return;
+        const raw = document.getElementById('userAnswer').value;
+        const userVal = parseFloat(raw);
+
+        if (Number.isNaN(userVal)) {
+            return alert("請輸入數字答案！");
+        }
+
+        const ok = Math.abs(userVal - currentAnswer) < 0.01;
+
+        // 儲存至復盤紀錄
+        gameHistory.push({
+            qText: currentQuestionObj.q,
+            svg: currentQuestionObj.svg,
+            userAns: userVal,
+            correctAns: currentAnswer,
+            isCorrect: ok
+        });
+
+        const mascotMsg = document.getElementById('mascotMsg');
+
+        if (ok) {
+            score += 100 * combo;
+            timeLeft += 5;
+            combo = (combo < 2) ? combo + 0.5 : 2;
+
+            showFeedback('ok', `
+                ✅ <span style="font-size:18px;">答對了！</span>
+                <div class="feedback-hint">+100 分（依 Combo 加成）｜時間 +5 秒</div>
+            `);
+            mascotMsg.innerText = correctQuotes[Math.floor(Math.random() * correctQuotes.length)];
+        } else {
+            timeLeft -= 5;
+            combo = 1;
+
+            showFeedback('bad', `
+                ❌ <span style="font-size:18px;">答錯了！</span>
+                <div class="feedback-hint">正確答案：<strong>${currentAnswer}</strong> ｜時間 -5 秒</div>
+            `);
+            mascotMsg.innerText = wrongQuotes[Math.floor(Math.random() * wrongQuotes.length)];
+        }
+
+        updateUI();
+
+        isTransitioning = true;
+        document.getElementById('submitBtn').disabled = true;
+
+        setTimeout(() => {
+            document.getElementById('submitBtn').disabled = false;
+            isTransitioning = false;
+            if (timeLeft > 0) nextQuestion();
+        }, NEXT_DELAY);
+    }
+
+    function updateUI() {
+        document.getElementById('score').innerText = score;
+        document.getElementById('timer').innerText = timeLeft;
+        document.getElementById('combo').innerText = combo;
+    }
+
+    function endGame() {
+        clearInterval(timerInterval);
+        alert(`遊戲結束！您的得分是：${score}`);
+        saveToLeaderboard(playerName, currentLevel, getModeLabel(currentMode), score, gameHistory.length);
+        
+        // 進入復盤頁面
+        renderReview();
+        showPage('page4');
+    }
+
+    // 第二點需求：渲染復盤畫面與最新統計
+    function renderReview() {
+        const total = gameHistory.length;
+        const correct = gameHistory.filter(item => item.isCorrect).length;
+        const wrong = total - correct;
+
+        document.getElementById('finalScore').innerText = score;
+        document.getElementById('correctCount').innerText = correct;
+        document.getElementById('wrongCount').innerText = wrong;
+        document.querySelectorAll('.totalCount').forEach(el => el.innerText = total);
+
+        const container = document.getElementById('reviewContainer');
+        
+        if (gameHistory.length === 0) {
+            container.innerHTML = "<p>您尚未作答任何題目。</p>";
+            return;
+        }
+
+        container.innerHTML = gameHistory.map((item, i) => `
+            <div class="review-item ${item.isCorrect ? 'correct' : 'wrong'}">
+                <h4>第 ${i + 1} 題</h4>
+                <p><strong>題目：</strong>${item.qText}</p>
+                <div class="review-svg-wrap">${item.svg}</div>
+                <p style="margin-top: 10px;">
+                    <strong>您的答案：</strong> <span style="color: ${item.isCorrect ? '#2ecc71' : '#e74c3c'}; font-weight: bold;">${item.userAns}</span><br>
+                    <strong>正確答案：</strong> <span style="color: #34495e; font-weight: bold;">${item.correctAns}</span>
+                </p>
+            </div>
+        `).join('');
+    }
+
+    // 第六點需求：排行榜加入日期與時間、成績/答題數
+    function saveToLeaderboard(name, lv, modeLabel, sc, totalAns) {
+        let board = JSON.parse(localStorage.getItem('jessieBoard') || '[]');
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('zh-TW') + ' ' + now.toLocaleTimeString('zh-TW', { hour12: false, hour: '2-digit', minute: '2-digit' });
+        
+        board.push({name, date: dateStr, lv, mode: modeLabel, sc, totalAns});
+        board.sort((a, b) => b.sc - a.sc);
+        board = board.slice(0, 10);
+        localStorage.setItem('jessieBoard', JSON.stringify(board));
+        refreshBoard();
+    }
+
+    function refreshBoard() {
+        const board = JSON.parse(localStorage.getItem('jessieBoard') || '[]');
+        const tbody = document.getElementById('leaderboardBody');
+        if (board.length === 0) return;
+
+        tbody.innerHTML = board.map((item, index) => {
+            let icon = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : index + 1;
+            return `<tr>
+                <td>${icon}</td>
+                <td>${item.name}</td>
+                <td>${item.date || "-"}</td>
+                <td>第${item.lv}關</td>
+                <td>${item.mode || "-"}</td>
+                <td>${item.sc} / ${item.totalAns !== undefined ? item.totalAns : '?'}</td>
+            </tr>`;
+        }).join('');
+    }
+
+    // --- 新增需求：暫停時遮掉題目 ---
+    function pauseGame() { 
+        const qc = document.getElementById('questionContainer');
+        // 先將題目區塊隱藏
+        qc.style.visibility = 'hidden';
+        
+        // 使用 setTimeout 給瀏覽器一點時間完成隱藏渲染，再跳出暫停提示框
+        setTimeout(() => {
+            alert("遊戲暫停中，按下確定繼續");
+            // 按下確定後，重新顯示題目區塊
+            qc.style.visibility = 'visible';
+        }, 50);
+    }
+    
+    function resetGame() { startGame(currentLevel); }
+
+    window.onload = () => {
+        refreshBoard();
+        setMode("basic");
+
+        // --- 監聽 Enter 鍵來觸發提交 ---
+        document.getElementById('userAnswer').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // 防止預設的表單送出行為（如果有）
+                // 確保在未鎖定作答時才觸發
+                if (!document.getElementById('submitBtn').disabled) {
+                    checkAnswer();
+                }
+            }
+        });
+    };
+</script>
+
+<footer>
+    <div class="footer-pill">
+        <div class="footer-left">
+            <div class="footer-dot" aria-hidden="true"></div>
+            <div class="footer-copy">© 2025–2026 Jessie Math 捷析老師. All rights reserved.</div>
+        </div>
+        <div class="footer-right">
+            <div class="footer-icon" aria-hidden="true"><i class="fas fa-compass"></i></div>
+            <div class="footer-tagline">數學不迷路，捷析Jessie 帶你走向理解。</div>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
